@@ -40,18 +40,20 @@ export async function routes(app: FastifyTypedInstance) {
             body: z.object({
                 name: z.string(),
                 email: z.string().email(),
+                password: z.string().min(6),
             }),
             response: {
                 201: z.null().describe("Usuário criado com sucesso"),
                 },
             },
         }, async (request, reply) => {
-            const { name, email } = request.body;
+            const { name, email, password } = request.body;
 
             const user = userRepository.create({
                 id: randomUUID(),
                 name,
                 email,
+                password,
             })
 
             await userRepository.save(user)

@@ -9,8 +9,7 @@ export const AppDataSource = new DataSource({
     username: "postgres",
     password: "postgres",
     database: "quizapp",
-    synchronize: true, // em produção, trocar migrations ao invés de synchronize
-    logging: true,
+    synchronize: true, // em produção, trocar synchronize para migrations
     entities: [User],
     subscribers: [],
     migrations: [],

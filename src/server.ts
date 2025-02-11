@@ -18,7 +18,7 @@ app.register(fastifySwagger, {
     openapi: {
         info: {
             title: "BMC² Tech - Quiz App API",
-            description: "API para gerenciar quizzes",
+            description: "API for Quiz App",
             version: "1.0.0",
         },
     },
@@ -41,6 +41,6 @@ async function bootstrap() {
 
 bootstrap()
     .catch((err) => {
-        console.error("Erro ao iniciar aplicação:", err)
+        console.error("Error starting application:", err)
         process.exit(1)
     })

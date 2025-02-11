@@ -1,0 +1,45 @@
+services:
+  postgres:
+    image: postgres:latest
+    container_name: quizapp_postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+
+      POSTGRES_DB: quizapp
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - quizapp_network
+
+  redis:
+    image: redis:latest
+    container_name: quizapp_redis
+    ports:
+      - "6379:6379"
+    networks:
+
+      - quizapp_network
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: quizapp_rabbitmq
+    ports:
+      - "5672:5672"
+
+      - "15672:15672"  # Porta da interface de gerenciamento
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: bmctech#45123
+    networks:
+      - quizapp_network
+
+
+networks:
+  quizapp_network:
+    driver: bridge
+
+volumes:
+  pgdata:

@@ -3,6 +3,7 @@ import { FastifyTypedInstance } from "./types";
 import { randomUUID } from "node:crypto";
 import { AppDataSource } from "./lib/database";
 import { User as UserEntity } from "./entities/User";
+import bcrypt from "bcrypt"
 
 interface User {
     id: string;
@@ -49,11 +50,13 @@ export async function routes(app: FastifyTypedInstance) {
         }, async (request, reply) => {
             const { name, email, password } = request.body;
 
+            const hashedPassword = await bcrypt.hash(password, 10)
+
             const user = userRepository.create({
                 id: randomUUID(),
                 name,
                 email,
-                password,
+                password: hashedPassword,
             })
 
             await userRepository.save(user)

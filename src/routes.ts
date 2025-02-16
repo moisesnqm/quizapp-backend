@@ -1,19 +1,11 @@
 import z from "zod";
 import { FastifyTypedInstance } from "./types";
-import { randomUUID } from "node:crypto";
 import { AppDataSource } from "./lib/database";
 import { User as UserEntity } from "./entities/User";
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 import { redis } from './lib/redis'
-
-interface User {
-    id: string;
-    name: string;
-    email: string;
-}
-
-const users: User[] = []
+import { uuidv7 } from 'uuidv7';
 
 export async function routes(app: FastifyTypedInstance) {
     const userRepository = AppDataSource.getRepository(UserEntity)
@@ -35,10 +27,10 @@ export async function routes(app: FastifyTypedInstance) {
         return users
     })
 
-
-    app.post("/register", {
+    app.post("/users", {
         schema: {
-            tags: ["users"],
+            tags: ["auth"],
+            summary: "Create a new user",
             description: "Create a new user",
             body: z.object({
                 name: z.string(),
@@ -47,26 +39,46 @@ export async function routes(app: FastifyTypedInstance) {
             }),
             response: {
                 201: z.null().describe("User created successfully"),
+                400: z.object({
+                    message: z.string(),
+                }).describe("Email already registered"),
+                500: z.object({
+                    message: z.string(),
+                }).describe("Internal server error"),
             },
-        },
-        }, async (request, reply) => {
+        }
+    }, async (request, reply) => {
+        try {
             const { name, email, password } = request.body;
-
             const hashedPassword = await bcrypt.hash(password, 10)
 
+            const existingUser = await userRepository.findOne({ 
+                where: { email } 
+            })
+
+            if (existingUser) {
+                return reply.status(400).send({ 
+                    message: "Email already registered" 
+                })
+            }
+
             const user = userRepository.create({
-                id: randomUUID(),
+                id: uuidv7(),
                 name,
                 email,
                 password: hashedPassword,
             })
 
             await userRepository.save(user)
-
             return reply.status(201).send()
+        } catch (error) {
+            return reply.status(500).send({ 
+                message: "Internal server error" 
+            })
+        }
     })
 
-    app.post("/login", {
+    app.post("/sessions/password", {
         schema: {
             tags: ["auth"],
             description: "Autenticar usuário",
@@ -151,4 +163,6 @@ export async function routes(app: FastifyTypedInstance) {
             return reply.status(401).send({ message: "Token inválido" })
         }
     })
+
+    
 }

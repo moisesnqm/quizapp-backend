@@ -13,4 +13,7 @@ export class User {
 
     @Column("varchar")
     password!: string
+
+    @Column("varchar", { default: "member" })
+    role!: "admin" | "member"
 } 

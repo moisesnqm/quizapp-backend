@@ -14,6 +14,9 @@ export class User {
     @Column("varchar")
     password!: string
 
-    @Column("varchar", { default: "member" })
-    role!: "admin" | "member"
-} 
+    @Column("varchar", { default: "manager" })
+    role!: "admin" | "manager"
+
+    @Column("varchar", { default: "Y" })
+    isActive!: "Y" | "N "
+}

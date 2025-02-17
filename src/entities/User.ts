@@ -18,5 +18,5 @@ export class User {
     role!: "admin" | "manager"
 
     @Column("varchar", { default: "Y" })
-    isActive!: "Y" | "N "
+    isActive!: "Y" | "N"
 }

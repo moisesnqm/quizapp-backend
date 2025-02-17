@@ -35,7 +35,7 @@ async function bootstrap() {
     await AppDataSource.initialize()
     
     app.listen({ port: 3333 }, () => {
-        console.log("HTTP server running!");
+        console.log("HTTP server running on port 3333!");
     });
 }
 

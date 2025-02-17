@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "tsx watch src/server.ts"
+    "dev": "tsx watch --env-file=.env src/server.ts"
   },
   "keywords": [],
   "author": "",
@@ -16,10 +16,12 @@
     "@fastify/swagger": "^9.4.2",
     "@fastify/swagger-ui": "^5.2.1",
     "@paralleldrive/cuid2": "^2.2.2",
+    "@types/ioredis": "^4.28.10",
     "amqplib": "^0.10.5",
     "bcrypt": "^5.1.1",
     "fastify": "^5.2.1",
     "fastify-type-provider-zod": "^4.0.2",
+    "ioredis": "^5.5.0",
     "jsonwebtoken": "^9.0.2",
     "pg": "^8.13.1",
     "redis": "^4.7.0",

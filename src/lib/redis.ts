@@ -1,7 +1,8 @@
-import { createClient } from 'redis'
+import { Redis } from 'ioredis'
+import { env } from '../config/env'
 
-export const redis = createClient({
-    url: 'redis://localhost:6379'
-})
-
-redis.connect() 
+export const redis = new Redis({
+    host: env.REDIS_HOST,
+    port: env.REDIS_PORT,
+    password: env.REDIS_PASS || undefined,
+}) 

@@ -1,2 +1,5 @@
 node_modules
 todo
+.env
+.env.local
+.env.*.local

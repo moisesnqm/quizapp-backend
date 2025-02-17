@@ -7,6 +7,7 @@ import jwt from "jsonwebtoken";
 import { redis } from '../lib/redis';
 import z from "zod";
 import { randomUUID } from "crypto"
+import { env } from "../config/env";
 
 export async function authRoutes(app: FastifyTypedInstance) {
     const userRepository = AppDataSource.getRepository(User);
@@ -92,19 +93,17 @@ export async function authRoutes(app: FastifyTypedInstance) {
 
         const access_token = jwt.sign(
             { sub: user.id, email: user.email },
-            "#bmc@quizapp2025",
+            env.JWT_SECRET,
             { expiresIn: "15m" }
         )
 
         const refresh_token = jwt.sign(
             { sub: user.id },
-            "#bmc@quizapp2025",
+            env.JWT_REFRESH_SECRET,
             { expiresIn: "7d" }
         )
 
-        await redis.set(`refresh_token:${user.id}`, refresh_token, {
-            EX: 60 * 60 * 24 * 7
-        })
+        await redis.set(`refresh_token:${user.id}`, refresh_token, 'EX', 60 * 60 * 24 * 7)
 
         return { access_token, refresh_token }
     })
@@ -130,7 +129,7 @@ export async function authRoutes(app: FastifyTypedInstance) {
         const { refresh_token } = request.body
 
         try {
-            const decoded = jwt.verify(refresh_token, "#bmc@quizapp2025") as { sub: string }
+            const decoded = jwt.verify(refresh_token, env.JWT_REFRESH_SECRET) as { sub: string }
             
             const storedToken = await redis.get(`refresh_token:${decoded.sub}`)
             
@@ -140,7 +139,7 @@ export async function authRoutes(app: FastifyTypedInstance) {
 
             const access_token = jwt.sign(
                 { sub: decoded.sub },
-                "#bmc@quizapp2025",
+                env.JWT_SECRET,
                 { expiresIn: "15m" }
             )
 
@@ -224,9 +223,7 @@ export async function authRoutes(app: FastifyTypedInstance) {
         const token = randomUUID()
         
         // Armazena o token no Redis com expiração de 1 hora
-        await redis.set(`password_reset:${token}`, user.id, {
-            EX: 60 * 60 // 1 hora
-        })
+        await redis.set(`password_reset:${token}`, user.id, 'EX', 60 * 60) // 1 hora
 
         // TODO: Enviar email com o link de recuperação
         // const resetLink = `${process.env.FRONTEND_URL}/reset-password?token=${token}`

@@ -67,7 +67,7 @@ export async function quizzesRoutes(app: FastifyTypedInstance) {
         schema: {
             tags: ["quizzes"],
             summary: "Get a quiz by ID",
-            description: "Get a quiz by ID with all its information",
+            description: "Get a quiz by ID with all its content",
             params: z.object({
                 id: z.string(),
             }),
@@ -77,13 +77,7 @@ export async function quizzesRoutes(app: FastifyTypedInstance) {
                     title: z.string(),
                     description: z.string(),
                     managerId: z.string(),
-                    info: z.array(z.object({
-                        text: z.string(),
-                        options: z.array(z.object({
-                            text: z.string(),
-                            isCorrect: z.boolean(),
-                        })),
-                    })),
+                    content: z.string(),
                     createdAt: z.string(),
                 }),
                 404: z.object({
@@ -108,7 +102,7 @@ export async function quizzesRoutes(app: FastifyTypedInstance) {
             title: quiz.title,
             description: quiz.description,
             managerId: quiz.managerId,
-            info: quiz.info,
+            content: quiz.content,
             createdAt: quiz.createdAt.toISOString(),
         }
     })
@@ -191,13 +185,7 @@ export async function quizzesRoutes(app: FastifyTypedInstance) {
                 title: z.string(),
                 description: z.string(),
                 managerId: z.string(),
-                info: z.array(z.object({
-                    text: z.string(),
-                    options: z.array(z.object({
-                        text: z.string(),
-                        isCorrect: z.boolean(),
-                    })),
-                })),
+                content: z.string()
             }),
             response: {
                 201: z.object({
@@ -210,14 +198,14 @@ export async function quizzesRoutes(app: FastifyTypedInstance) {
             },
         },
     }, async (request, reply) => {
-        const { title, description, managerId, info } = request.body
+        const { title, description, managerId, content } = request.body
         
         const quiz = quizRepository.create({
             id: createId(),
             title,
             description,
             managerId,
-            info,
+            content,
         })
 
         await quizRepository.save(quiz)
@@ -243,13 +231,7 @@ export async function quizzesRoutes(app: FastifyTypedInstance) {
             body: z.object({
                 title: z.string(),
                 description: z.string(),
-                info: z.array(z.object({
-                    text: z.string(),
-                    options: z.array(z.object({
-                        text: z.string(),
-                        isCorrect: z.boolean(),
-                    })),
-                })),
+                content: z.string()
             }),
             response: {
                 200: z.object({
@@ -266,7 +248,7 @@ export async function quizzesRoutes(app: FastifyTypedInstance) {
         },
     }, async (request, reply) => {
         const { id } = request.params
-        const { title, description, info } = request.body
+        const { title, description, content } = request.body
 
         const quiz = await quizRepository.findOne({
             where: { id }
@@ -279,7 +261,7 @@ export async function quizzesRoutes(app: FastifyTypedInstance) {
 
         quiz.title = title
         quiz.description = description
-        quiz.info = info
+        quiz.content = content
 
         await quizRepository.save(quiz)
 

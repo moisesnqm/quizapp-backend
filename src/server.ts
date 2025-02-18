@@ -34,7 +34,7 @@ app.register(routes);
 async function bootstrap() {
     await AppDataSource.initialize()
     
-    app.listen({ port: 3333 }, () => {
+    app.listen({ port: 3333, host: "0.0.0.0" }, () => {
         console.log("HTTP server running on port 3333!");
     });
 }

@@ -15,13 +15,7 @@ export class Quiz {
     managerId!: string;
 
     @Column("jsonb")
-    info!: {
-        text: string;
-        options: {
-            text: string;
-            isCorrect: boolean;
-        }[];
-    }[];
+    content!: any;
 
     @CreateDateColumn()
     createdAt!: Date;

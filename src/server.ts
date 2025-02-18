@@ -1,11 +1,12 @@
 import "reflect-metadata"
+import "@/shared/container"
 import { fastify } from "fastify";
 import { fastifyCors } from "@fastify/cors";
 import { validatorCompiler, serializerCompiler, type ZodTypeProvider, jsonSchemaTransform } from "fastify-type-provider-zod";
 import { fastifySwagger } from "@fastify/swagger";
 import { fastifySwaggerUi } from "@fastify/swagger-ui";
-import { routes } from "./routes";
-import { AppDataSource } from "./lib/database"
+import { routes } from "./shared/infra/http/routes";
+import { AppDataSource } from "./shared/infra/database"
 
 const app = fastify().withTypeProvider<ZodTypeProvider>();
 
@@ -20,6 +21,15 @@ app.register(fastifySwagger, {
             title: "BMC² Tech - Quiz App API",
             description: "API for Quiz App",
             version: "1.0.0",
+        },
+        components: {
+            securitySchemes: {
+                bearerAuth: {
+                    type: 'http',
+                    scheme: 'bearer',
+                    bearerFormat: 'JWT',
+                },
+            },
         },
     },
     transform: jsonSchemaTransform,

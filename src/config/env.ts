@@ -19,6 +19,13 @@ const envSchema = z.object({
 
     // Frontend
     FRONTEND_URL: z.string().url(),
+
+    // Mail
+    MAIL_HOST: z.string(),
+    MAIL_PORT: z.string().transform(Number),
+    MAIL_USER: z.string(),
+    MAIL_PASS: z.string(),
+    MAIL_FROM: z.string().email(),
 })
 
 export const env = envSchema.parse(process.env)

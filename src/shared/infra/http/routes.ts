@@ -4,6 +4,7 @@ import { managerRoutes } from "./routes/managers/index";
 import { quizzesRoutes } from "./routes/quizzes/index";
 import { campaignCategoriesRoutes } from "./routes/campaign-categories";
 import { marketNichesRoutes } from "./routes/market-niches";
+import { campaignRoutes } from "./routes/campaigns/index";
 
 export async function routes(app: FastifyTypedInstance) {
     await authRoutes(app);
@@ -11,4 +12,5 @@ export async function routes(app: FastifyTypedInstance) {
     await quizzesRoutes(app);
     await campaignCategoriesRoutes(app);
     await marketNichesRoutes(app);
+    await campaignRoutes(app);
 }

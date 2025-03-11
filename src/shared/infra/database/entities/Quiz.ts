@@ -2,11 +2,14 @@ import { Entity, Column, PrimaryColumn, CreateDateColumn } from "typeorm";
 
 @Entity("quizzes")
 export class Quiz {
-    @PrimaryColumn("varchar")
+    @PrimaryColumn("uuid")
     id!: string;
 
     @Column("varchar")
-    title!: string;
+    name!: string;
+
+    @Column("varchar", { nullable: true })
+    subject!: string;
 
     @Column("varchar")
     description!: string;
@@ -16,6 +19,15 @@ export class Quiz {
 
     @Column("jsonb")
     content!: any;
+
+    @Column("varchar")
+    status!: string;
+
+    @Column("timestamp")
+    startDate!: Date;
+
+    @Column("timestamp")
+    endDate!: Date;
 
     @CreateDateColumn()
     createdAt!: Date;

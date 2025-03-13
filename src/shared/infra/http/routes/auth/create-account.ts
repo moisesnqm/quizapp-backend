@@ -26,6 +26,7 @@ export async function createAccount(app: FastifyTypedInstance) {
                 }).describe("Email already registered"),
                 500: z.object({
                     message: z.string(),
+                    details: z.string().optional(),
                 }).describe("Internal server error"),
             },
         }

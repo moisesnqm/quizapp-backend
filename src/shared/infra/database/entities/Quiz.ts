@@ -15,7 +15,7 @@ export class Quiz {
     description!: string;
 
     @Column("varchar")
-    managerId!: string;
+    managerid!: string;
 
     @Column("jsonb")
     content!: any;

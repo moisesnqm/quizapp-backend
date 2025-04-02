@@ -32,7 +32,7 @@ export class RefreshTokenService {
             const access_token = sign(
                 { sub: decoded.sub },
                 env.JWT_SECRET,
-                { expiresIn: '15m' }
+                { expiresIn: '1d' }
             )
 
             return { access_token }

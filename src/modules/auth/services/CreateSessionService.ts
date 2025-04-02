@@ -49,7 +49,7 @@ export class CreateSessionService {
         const access_token = sign(
             { sub: user.id, email: user.email },
             env.JWT_SECRET,
-            { expiresIn: '15m' }
+            { expiresIn: '1d' }
         )
 
         const refresh_token = sign(

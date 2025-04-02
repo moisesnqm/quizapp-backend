@@ -30,7 +30,10 @@ export class CreateQuizService {
         const quiz = await this.quizzesRepository.create({
             id: randomUUID(),
             managerId,
-            ...data
+            ...data,
+            status: 'draft',
+            startDate: data.startDate || new Date(),
+            endDate: data.endDate || new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
         })
 
         return quiz

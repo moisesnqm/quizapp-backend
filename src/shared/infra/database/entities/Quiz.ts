@@ -6,7 +6,7 @@ export class Quiz {
     id!: string;
 
     @Column("varchar")
-    name!: string;
+    title!: string;
 
     @Column("varchar", { nullable: true })
     subject!: string;
@@ -15,7 +15,7 @@ export class Quiz {
     description!: string;
 
     @Column("varchar")
-    managerid!: string;
+    managerId!: string;
 
     @Column("jsonb")
     content!: any;

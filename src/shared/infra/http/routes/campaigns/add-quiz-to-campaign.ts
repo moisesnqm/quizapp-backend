@@ -33,11 +33,11 @@ export async function addQuizToCampaign(app: FastifyTypedInstance) {
                     updatedAt: z.number(),
                     quizzes: z.array(z.object({
                         id: z.string(),
-                        name: z.string(),
+                        title: z.string(),
                         subject: z.string().nullable(),
                         status: z.string(),
-                        startDate: z.number(),
-                        endDate: z.number(),
+                        startDate: z.number().nullable(),
+                        endDate: z.number().nullable(),
                     })),
                 }),
             },
@@ -76,11 +76,11 @@ export async function addQuizToCampaign(app: FastifyTypedInstance) {
             updatedAt: campaign.updatedAt.getTime(),
             quizzes: campaign.quizzes.map(quiz => ({
                 id: quiz.id,
-                name: quiz.name,
-                subject: quiz.description,
+                title: quiz.title,
+                subject: quiz.subject || null,
                 status: quiz.status,
-                startDate: quiz.startDate.getTime(),
-                endDate: quiz.endDate.getTime(),
+                startDate: quiz.startDate ? quiz.startDate.getTime() : null,
+                endDate: quiz.endDate ? quiz.endDate.getTime() : null,
             })),
         }
     })

@@ -4,6 +4,7 @@ import { getQuizzById } from "./get-quizz-by-id";
 import { createQuiz } from "./create-quizz";
 import { updateQuizz } from "./update-quizz";
 import { deleteQuizz } from "./delete-quizz";
+import { getPublicQuiz } from "./get-public-quiz";
 import { ensureAuthenticated } from '@/shared/middlewares/ensureAuthenticated'
 
 export async function quizzesRoutes(app: FastifyTypedInstance) {
@@ -17,4 +18,7 @@ export async function quizzesRoutes(app: FastifyTypedInstance) {
         await updateQuizz(protectedRoutes);
         await deleteQuizz(protectedRoutes);
     });
+
+    // Rotas públicas
+    await getPublicQuiz(app);
 }

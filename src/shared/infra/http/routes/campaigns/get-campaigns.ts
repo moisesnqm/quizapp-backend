@@ -21,7 +21,7 @@ export async function getCampaigns(app: FastifyTypedInstance) {
                         id: z.string(),
                         name: z.string(),
                         subject: z.string().nullable(),
-                        status: z.enum(['Pendente', 'Em Andamento', 'Concluída', 'Cancelada']),
+                        status: z.enum(['draft','Pendente', 'Em Andamento', 'Concluída', 'Cancelada']),
                         startDate: z.number(),
                         endDate: z.number(),
                         owner: z.string(),

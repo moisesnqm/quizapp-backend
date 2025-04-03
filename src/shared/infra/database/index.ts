@@ -12,6 +12,7 @@ import { CreateCampaignCategories20250310205022 } from './migrations/20250310205
 import { CreateMarketNiches20250310205045 } from './migrations/20250310205045-CreateMarketNiches'
 import { CreateUsers20240315150003 } from './migrations/20240315150003-CreateUsers'
 import { CreateQuizResponses20250402224701 } from './migrations/20250402224701-CreateQuizResponses'
+import { RenameQuizResponseColumns20250402230000 } from './migrations/20250402230000-RenameQuizResponseColumns'
 
 export const AppDataSource = new DataSource({
     type: 'postgres',
@@ -28,5 +29,6 @@ export const AppDataSource = new DataSource({
         CreateMarketNiches20250310205045,
         CreateUsers20240315150003,
         CreateQuizResponses20250402224701,
+        RenameQuizResponseColumns20250402230000,
     ],
 }) 

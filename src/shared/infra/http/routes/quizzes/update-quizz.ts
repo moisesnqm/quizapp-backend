@@ -26,6 +26,7 @@ export async function updateQuizz(app: FastifyTypedInstance) {
                     title: z.string(),
                     description: z.string(),
                     managerId: z.string(),
+                    content: z.string(),
                     createdAt: z.string(),
                 }),
                 404: z.object({
@@ -57,6 +58,7 @@ export async function updateQuizz(app: FastifyTypedInstance) {
             title: quiz.title,
             description: quiz.description,
             managerId: quiz.managerId,
+            content: quiz.content,
             createdAt: quiz.createdAt.toISOString(),
         }
     })

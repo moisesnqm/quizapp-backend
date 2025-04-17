@@ -13,7 +13,7 @@ export async function getPublicQuiz(app: FastifyTypedInstance) {
             tags: ["quizzes"],
             summary: "Get public quiz information by ID",
             params: z.object({
-                id: z.string().uuid(),
+                id: z.string().min(1),
             }),
             response: {
                 200: z.object({

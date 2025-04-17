@@ -14,7 +14,7 @@ export async function removeQuizFromCampaign(app: FastifyTypedInstance) {
             security: [{ bearerAuth: [] }],
             params: z.object({
                 id: z.string().uuid(),
-                quizId: z.string().uuid(),
+                quizId: z.string().min(1),
             }),
             response: {
                 200: z.object({
@@ -65,7 +65,7 @@ export async function removeQuizFromCampaign(app: FastifyTypedInstance) {
             updatedAt: campaign.updatedAt.getTime(),
             quizzes: campaign.quizzes.map(quiz => ({
                 id: quiz.id,
-                name: quiz.name,
+                name: quiz.title,
                 subject: quiz.subject,
                 status: quiz.status,
                 startDate: quiz.startDate.getTime(),

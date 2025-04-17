@@ -1,5 +1,4 @@
 import { inject, injectable } from 'tsyringe'
-import { randomUUID } from 'crypto'
 import { IQuizzesRepository } from '../repositories/IQuizzesRepository'
 import { IUsersRepository } from '@/modules/users/repositories/IUsersRepository'
 import { AppError } from '@/shared/errors/AppError'
@@ -28,7 +27,7 @@ export class CreateQuizService {
         }
 
         const quiz = await this.quizzesRepository.create({
-            id: randomUUID(),
+            id: Quiz.generateId(),
             managerId,
             ...data,
             status: 'draft',

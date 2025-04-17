@@ -13,7 +13,7 @@ export async function getQuizzById(app: FastifyTypedInstance) {
             description: "Get a quiz by ID with all its content",
             security: [{ bearerAuth: [] }],
             params: z.object({
-                id: z.string(),
+                id: z.string().min(1),
             }),
             response: {
                 200: z.object({

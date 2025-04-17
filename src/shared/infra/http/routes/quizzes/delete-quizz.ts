@@ -13,7 +13,7 @@ export async function deleteQuizz(app: FastifyTypedInstance) {
             description: "Delete a quiz",
             security: [{ bearerAuth: [] }],
             params: z.object({
-                id: z.string(),
+                id: z.string().min(1),
             }),
             response: {
                 200: z.object({

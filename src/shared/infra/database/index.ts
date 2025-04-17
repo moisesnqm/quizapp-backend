@@ -13,6 +13,8 @@ import { CreateMarketNiches20250310205045 } from './migrations/20250310205045-Cr
 import { CreateUsers20240315150003 } from './migrations/20240315150003-CreateUsers'
 import { CreateQuizResponses20250402224701 } from './migrations/20250402224701-CreateQuizResponses'
 import { RenameQuizResponseColumns20250402230000 } from './migrations/20250402230000-RenameQuizResponseColumns'
+import { ConvertQuizIdsToNanoid20250402230002 } from './migrations/20250402230002-ConvertQuizIdsToNanoid'
+import { ChangeQuizIdColumn20250402230003 } from './migrations/20250402230003-ChangeQuizIdColumn'
 
 export const AppDataSource = new DataSource({
     type: 'postgres',
@@ -30,5 +32,7 @@ export const AppDataSource = new DataSource({
         CreateUsers20240315150003,
         CreateQuizResponses20250402224701,
         RenameQuizResponseColumns20250402230000,
+        ConvertQuizIdsToNanoid20250402230002,
+        ChangeQuizIdColumn20250402230003,
     ],
 }) 

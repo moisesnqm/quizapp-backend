@@ -15,7 +15,7 @@ export async function getQuizResponses(app: FastifyTypedInstance) {
                 page: z.string().optional().default("1"),
                 limit: z.string().optional().default("10"),
                 campaignId: z.string().uuid().optional(),
-                quizId: z.string().uuid().optional(),
+                quizId: z.string().min(1).optional(),
             }),
             response: {
                 200: z.object({

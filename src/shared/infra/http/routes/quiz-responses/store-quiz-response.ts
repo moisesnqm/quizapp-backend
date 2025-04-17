@@ -14,7 +14,7 @@ export async function storeQuizResponse(app: FastifyTypedInstance) {
             body: z.object({
                 uuid: z.string().uuid(),
                 campaignId: z.string().uuid(),
-                quizId: z.string().uuid(),
+                quizId: z.string().min(1),
                 content: z.any(),
             }),
             response: {

@@ -29,6 +29,7 @@
     "fastify-type-provider-zod": "^4.0.2",
     "ioredis": "^5.5.0",
     "jsonwebtoken": "^9.0.2",
+    "nanoid": "^5.1.5",
     "nodemailer": "^6.10.0",
     "pg": "^8.13.1",
     "redis": "^4.7.0",

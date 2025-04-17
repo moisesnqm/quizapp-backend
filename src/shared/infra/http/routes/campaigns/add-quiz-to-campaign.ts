@@ -18,7 +18,7 @@ export async function addQuizToCampaign(app: FastifyTypedInstance) {
                 id: z.string().uuid(),
             }),
             body: z.object({
-                quizId: z.string().uuid(),
+                quizId: z.string().min(1),
             }),
             response: {
                 200: z.object({

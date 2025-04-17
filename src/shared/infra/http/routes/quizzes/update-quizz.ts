@@ -13,7 +13,7 @@ export async function updateQuizz(app: FastifyTypedInstance) {
             description: "Update a quiz",
             security: [{ bearerAuth: [] }],
             params: z.object({
-                id: z.string(),
+                id: z.string().min(1),
             }),
             body: z.object({
                 title: z.string(),

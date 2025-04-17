@@ -15,6 +15,8 @@ import { CreateQuizResponses20250402224701 } from './migrations/20250402224701-C
 import { RenameQuizResponseColumns20250402230000 } from './migrations/20250402230000-RenameQuizResponseColumns'
 import { ConvertQuizIdsToNanoid20250402230002 } from './migrations/20250402230002-ConvertQuizIdsToNanoid'
 import { ChangeQuizIdColumn20250402230003 } from './migrations/20250402230003-ChangeQuizIdColumn'
+import { ResizeQuizIdColumn20250402230004 } from './migrations/20250402230004-ResizeQuizIdColumn'
+import { UpdateQuizResponseForeignKey20250402230005 } from './migrations/20250402230005-UpdateQuizResponseForeignKey'
 
 export const AppDataSource = new DataSource({
     type: 'postgres',
@@ -34,5 +36,7 @@ export const AppDataSource = new DataSource({
         RenameQuizResponseColumns20250402230000,
         ConvertQuizIdsToNanoid20250402230002,
         ChangeQuizIdColumn20250402230003,
+        ResizeQuizIdColumn20250402230004,
+        UpdateQuizResponseForeignKey20250402230005,
     ],
 }) 

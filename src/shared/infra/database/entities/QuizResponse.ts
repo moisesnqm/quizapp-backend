@@ -12,7 +12,7 @@ export class QuizResponse {
     @Column('uuid')
     campaignId: string
 
-    @Column('uuid')
+    @Column('varchar', { length: 8 })
     quizId: string
 
     @Column('jsonb')

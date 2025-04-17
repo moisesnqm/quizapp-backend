@@ -2,7 +2,7 @@ import { Entity, Column, PrimaryColumn, CreateDateColumn } from "typeorm";
 import { nanoid } from 'nanoid';
 
 // Tamanho padrão do ID NanoID
-const NANOID_SIZE = 21;
+const NANOID_SIZE = 8;
 
 @Entity("quizzes")
 export class Quiz {
@@ -38,7 +38,7 @@ export class Quiz {
     
     /**
      * Gera um novo ID NanoID
-     * @param size Tamanho do ID (padrão: 21 caracteres)
+     * @param size Tamanho do ID (padrão: 8 caracteres)
      * @returns Novo ID NanoID
      */
     static generateId(size: number = NANOID_SIZE): string {

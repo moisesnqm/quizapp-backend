@@ -30,6 +30,10 @@ export class QuizzesRepository implements IQuizzesRepository {
     }
 
     async create(data: Partial<Quiz>): Promise<Quiz> {
+        if (!data.createdAt) {
+            data.createdAt = new Date();
+        }
+        
         const quiz = this.repository.create(data)
         return this.repository.save(quiz)
     }

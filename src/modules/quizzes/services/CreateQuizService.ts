@@ -26,13 +26,15 @@ export class CreateQuizService {
             throw new AppError('Only managers can create quizzes', 403)
         }
 
+        const now = new Date()
         const quiz = await this.quizzesRepository.create({
             id: Quiz.generateId(),
             managerId,
             ...data,
             status: 'draft',
-            startDate: data.startDate || new Date(),
-            endDate: data.endDate || new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+            startDate: data.startDate || now,
+            endDate: data.endDate || new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000),
+            createdAt: now
         })
 
         return quiz

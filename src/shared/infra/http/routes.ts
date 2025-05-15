@@ -7,6 +7,7 @@ import { marketNichesRoutes } from "./routes/market-niches";
 import { campaignRoutes } from "./routes/campaigns/index";
 import { responseRoutes } from "./routes/quiz-responses/index";
 import { emailVerificationRoutes } from "./routes/email-verification";
+import { debugRoutes } from "./routes/debug";
 
 export async function routes(app: FastifyTypedInstance) {
     await authRoutes(app);
@@ -17,4 +18,9 @@ export async function routes(app: FastifyTypedInstance) {
     await campaignRoutes(app);
     await responseRoutes(app);
     await emailVerificationRoutes(app);
+    
+    // Rotas de debug - apenas para ambiente de desenvolvimento
+    if (process.env.NODE_ENV !== 'production') {
+        await debugRoutes(app);
+    }
 }

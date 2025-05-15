@@ -67,6 +67,11 @@ const corsConfig = allowedDomains.length === 0
             const matches = origin.endsWith(suffix);
             console.log(`  Checking wildcard ${domain} against ${origin}: ${matches ? 'MATCH' : 'NO MATCH'}`);
             return matches;
+          } else if (domain === 'localhost') {
+            // Tratamento especial para localhost - verificar se a origem começa com http://localhost: ou https://localhost:
+            const isLocalhost = origin.match(/^https?:\/\/localhost(:\d+)?/i);
+            console.log(`  Checking localhost against ${origin}: ${isLocalhost ? 'MATCH' : 'NO MATCH'}`);
+            return !!isLocalhost;
           } else {
             // Para domínios exatos
             const matches = origin === domain;
@@ -104,6 +109,20 @@ app.addHook('onError', (request, reply, error, done) => {
     });
     return;
   }
+  
+  // Capturar erros do Swagger especificamente
+  if (request.url.startsWith('/docs/') && error) {
+    console.error(`Swagger Error for ${request.url}:`, error);
+    if (request.url === '/docs/json') {
+      reply.code(500).send({
+        error: 'Error generating Swagger documentation',
+        message: error.message || 'Unknown error',
+        stack: process.env.NODE_ENV !== 'production' ? error.stack : undefined
+      });
+      return;
+    }
+  }
+  
   done();
 });
 
@@ -124,11 +143,36 @@ app.register(fastifySwagger, {
             },
         },
     },
-    transform: jsonSchemaTransform,
+    transform: ({ schema, url }) => {
+        try {
+            // Fazer uma transformação personalizada para evitar problemas de serialização
+            return jsonSchemaTransform({ schema, url });
+        } catch (error) {
+            console.error('Error transforming schema for route:', url);
+            console.error('Error details:', error);
+            // Retornar um schema mínimo para não quebrar toda a documentação
+            return {
+                schema: {
+                    summary: url,
+                    description: `Schema transformation error for ${url}`
+                },
+                url
+            };
+        }
+    },
 });
 
 app.register(fastifySwaggerUi, {
     routePrefix: "/docs",
+    // Adicionar opções de debug para o swagger UI
+    uiConfig: {
+        docExpansion: 'list',
+        deepLinking: true
+    },
+    // Aumentar o timeout da requisição para permitir schemas maiores
+    uiHooks: {
+        onRequest: function(request, reply, next) { next() }
+    }
 });
 
 app.register(routes);

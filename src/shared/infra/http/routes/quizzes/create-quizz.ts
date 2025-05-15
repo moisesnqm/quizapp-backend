@@ -19,6 +19,7 @@ export async function createQuiz(app: FastifyTypedInstance) {
                     title: z.string(),
                     description: z.string(),
                     content: z.any(),
+                    country: z.string().optional(),
                     managerId: z.string(),
                     createdAt: z.string(),
                 }),

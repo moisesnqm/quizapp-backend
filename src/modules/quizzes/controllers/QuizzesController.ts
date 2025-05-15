@@ -12,6 +12,9 @@ export class QuizzesController {
     async create(request: FastifyRequest, reply: FastifyReply) {
         const data = createQuizSchema.parse(request.body)
         const managerId = request.user.sub
+        
+        // Log para verificar o campo country
+        console.log("Quiz country:", data.country);
 
         const createQuiz = container.resolve(CreateQuizService)
         const quiz = await createQuiz.execute(managerId, data)
@@ -26,6 +29,9 @@ export class QuizzesController {
         const { id } = request.params as { id: string }
         const data = updateQuizSchema.parse(request.body)
         const managerId = request.user.sub
+        
+        // Log para verificar o campo country
+        console.log("Quiz country update:", data.country);
 
         const updateQuiz = container.resolve(UpdateQuizService)
         const quiz = await updateQuiz.execute(id, managerId, data)

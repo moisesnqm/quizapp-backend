@@ -27,6 +27,9 @@ export class Quiz {
     @Column("varchar")
     status!: string;
 
+    @Column("varchar", { nullable: true })
+    country!: string;
+
     @Column("timestamp")
     startDate!: Date;
 

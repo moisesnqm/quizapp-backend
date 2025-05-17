@@ -3,6 +3,7 @@ import { AppDataSource } from "../../../database"
 import { Campaign } from "../../../database/entities/Campaign"
 import { Quiz } from "../../../database/entities/Quiz"
 import { z } from "zod"
+import { AppError } from "@/shared/errors/AppError"
 
 export async function createCampaign(app: FastifyTypedInstance) {
     const repository = AppDataSource.getRepository(Campaign)
@@ -18,7 +19,6 @@ export async function createCampaign(app: FastifyTypedInstance) {
                 status: z.enum(['Pendente', 'Em Andamento', 'Concluída', 'Cancelada']),
                 startDate: z.number(),
                 endDate: z.number(),
-                owner: z.string(),
                 quizIds: z.array(z.string().uuid()).optional(),
             }),
             response: {
@@ -42,12 +42,19 @@ export async function createCampaign(app: FastifyTypedInstance) {
             status: 'Pendente' | 'Em Andamento' | 'Concluída' | 'Cancelada'
             startDate: number
             endDate: number
-            owner: string
             quizIds?: string[]
+        }
+        
+        // Obtém o ID do usuário do token JWT através do objeto user
+        const userId = request.user.sub
+        
+        if (!userId) {
+            throw new AppError('User not authenticated', 401)
         }
 
         const campaign = repository.create({
             ...data,
+            owner: userId, // Define o owner como o ID do usuário autenticado
             startDate: new Date(data.startDate),
             endDate: new Date(data.endDate),
         })

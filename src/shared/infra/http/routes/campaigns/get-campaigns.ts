@@ -25,6 +25,7 @@ export async function getCampaigns(app: FastifyTypedInstance) {
                         startDate: z.number(),
                         endDate: z.number(),
                         owner: z.string(),
+                        isOwner: z.boolean(),
                         createdAt: z.number(),
                         updatedAt: z.number(),
                         quizzes: z.array(z.object({
@@ -46,6 +47,7 @@ export async function getCampaigns(app: FastifyTypedInstance) {
         },
     }, async (request) => {
         const { page = "1", limit = "10" } = request.query as { page?: string, limit?: string }
+        const userId = request.user.sub
 
         const skip = (Number(page) - 1) * Number(limit)
         const take = Number(limit)
@@ -68,6 +70,7 @@ export async function getCampaigns(app: FastifyTypedInstance) {
                 startDate: campaign.startDate.getTime(),
                 endDate: campaign.endDate.getTime(),
                 owner: campaign.owner,
+                isOwner: campaign.owner === userId,
                 createdAt: campaign.createdAt.getTime(),
                 updatedAt: campaign.updatedAt.getTime(),
                 quizzes: campaign.quizzes.map(quiz => ({

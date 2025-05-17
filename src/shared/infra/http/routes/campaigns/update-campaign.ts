@@ -22,7 +22,6 @@ export async function updateCampaign(app: FastifyTypedInstance) {
                 status: z.enum(['Pendente', 'Em Andamento', 'Concluída', 'Cancelada']),
                 startDate: z.number(),
                 endDate: z.number(),
-                owner: z.string(),
                 quizIds: z.array(z.string().uuid()).optional(),
             }),
             response: {
@@ -47,7 +46,6 @@ export async function updateCampaign(app: FastifyTypedInstance) {
             status: 'Pendente' | 'Em Andamento' | 'Concluída' | 'Cancelada'
             startDate: number
             endDate: number
-            owner: string
             quizIds?: string[]
         }
 
@@ -59,11 +57,20 @@ export async function updateCampaign(app: FastifyTypedInstance) {
         if (!campaign) {
             throw new AppError('Campaign not found', 404)
         }
+        
+        // Obtém o ID do usuário atual do token JWT
+        const userId = request.user.sub
+        
+        // Verifica se o usuário atual é o proprietário da campanha
+        if (campaign.owner !== userId) {
+            throw new AppError('You do not have permission to update this campaign', 403)
+        }
 
         Object.assign(campaign, {
             ...data,
             startDate: new Date(data.startDate),
             endDate: new Date(data.endDate),
+            // Mantém o owner original, não permite alteração
         })
 
         if (quizIds?.length) {

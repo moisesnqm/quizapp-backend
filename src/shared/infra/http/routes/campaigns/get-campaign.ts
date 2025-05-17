@@ -24,6 +24,7 @@ export async function getCampaign(app: FastifyTypedInstance) {
                     startDate: z.number(),
                     endDate: z.number(),
                     owner: z.string(),
+                    isOwner: z.boolean(),
                     createdAt: z.number(),
                     updatedAt: z.number(),
                     quizzes: z.array(z.object({
@@ -39,6 +40,7 @@ export async function getCampaign(app: FastifyTypedInstance) {
         },
     }, async (request) => {
         const { id } = request.params as { id: string }
+        const userId = request.user.sub
 
         const campaign = await repository.findOne({
             where: { id },
@@ -48,6 +50,9 @@ export async function getCampaign(app: FastifyTypedInstance) {
         if (!campaign) {
             throw new AppError('Campaign not found', 404)
         }
+        
+        // Verifica se o usuário atual é o proprietário da campanha
+        const isOwner = campaign.owner === userId
 
         return {
             id: campaign.id,
@@ -57,6 +62,7 @@ export async function getCampaign(app: FastifyTypedInstance) {
             startDate: campaign.startDate.getTime(),
             endDate: campaign.endDate.getTime(),
             owner: campaign.owner,
+            isOwner, // Adiciona um campo indicando se o usuário atual é o proprietário
             createdAt: campaign.createdAt.getTime(),
             updatedAt: campaign.updatedAt.getTime(),
             quizzes: campaign.quizzes.map(quiz => ({

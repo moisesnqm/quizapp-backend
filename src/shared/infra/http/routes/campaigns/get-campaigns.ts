@@ -9,7 +9,7 @@ export async function getCampaigns(app: FastifyTypedInstance) {
     app.get("/campaigns", {
         schema: {
             tags: ["campaigns"],
-            summary: "List all campaigns",
+            summary: "List all campaigns for the authenticated user",
             security: [{ bearerAuth: [] }],
             querystring: z.object({
                 page: z.string().optional().default("1"),
@@ -53,6 +53,7 @@ export async function getCampaigns(app: FastifyTypedInstance) {
         const take = Number(limit)
 
         const [campaigns, total] = await repository.findAndCount({
+            where: { owner: userId },
             relations: ['quizzes'],
             order: { createdAt: 'DESC' },
             skip,
@@ -70,7 +71,7 @@ export async function getCampaigns(app: FastifyTypedInstance) {
                 startDate: campaign.startDate.getTime(),
                 endDate: campaign.endDate.getTime(),
                 owner: campaign.owner,
-                isOwner: campaign.owner === userId,
+                isOwner: true,
                 createdAt: campaign.createdAt.getTime(),
                 updatedAt: campaign.updatedAt.getTime(),
                 quizzes: campaign.quizzes.map(quiz => ({

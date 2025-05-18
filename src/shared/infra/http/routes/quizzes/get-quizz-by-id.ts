@@ -21,7 +21,7 @@ export async function getQuizzById(app: FastifyTypedInstance) {
                     title: z.string(),
                     description: z.string(),
                     managerId: z.string(),
-                    content: z.string(),
+                    content: z.any(),
                     country: z.string().optional(),
                     theme: z.string().optional(),
                     createdAt: z.string(),

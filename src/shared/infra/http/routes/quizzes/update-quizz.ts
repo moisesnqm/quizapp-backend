@@ -18,7 +18,7 @@ export async function updateQuizz(app: FastifyTypedInstance) {
             body: z.object({
                 title: z.string(),
                 description: z.string(),
-                content: z.string(),
+                content: z.any(),
                 country: z.string().optional(),
                 theme: z.string().optional()
             }),
@@ -28,7 +28,7 @@ export async function updateQuizz(app: FastifyTypedInstance) {
                     title: z.string(),
                     description: z.string(),
                     managerId: z.string(),
-                    content: z.string(),
+                    content: z.any(),
                     country: z.string().optional(),
                     theme: z.string().optional(),
                     createdAt: z.string(),

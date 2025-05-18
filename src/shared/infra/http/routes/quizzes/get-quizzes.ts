@@ -23,6 +23,8 @@ export async function getQuizzes(app: FastifyTypedInstance) {
                         title: z.string(),
                         description: z.string(),
                         managerId: z.string(),
+                        country: z.string().optional(),
+                        theme: z.string().optional(),
                         createdAt: z.string(),
                     })),
                     meta: z.object({
@@ -56,6 +58,8 @@ export async function getQuizzes(app: FastifyTypedInstance) {
                 title: quiz.title,
                 description: quiz.description,
                 managerId: quiz.managerId,
+                country: quiz.country,
+                theme: quiz.theme,
                 createdAt: quiz.createdAt.toISOString(),
             })),
             meta: {

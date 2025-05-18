@@ -22,6 +22,8 @@ export async function getQuizzById(app: FastifyTypedInstance) {
                     description: z.string(),
                     managerId: z.string(),
                     content: z.string(),
+                    country: z.string().optional(),
+                    theme: z.string().optional(),
                     createdAt: z.string(),
                 }),
                 404: z.object({
@@ -47,6 +49,8 @@ export async function getQuizzById(app: FastifyTypedInstance) {
             description: quiz.description,
             managerId: quiz.managerId,
             content: quiz.content,
+            country: quiz.country,
+            theme: quiz.theme,
             createdAt: quiz.createdAt.toISOString(),
         }
     })

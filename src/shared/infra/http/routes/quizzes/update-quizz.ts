@@ -18,7 +18,9 @@ export async function updateQuizz(app: FastifyTypedInstance) {
             body: z.object({
                 title: z.string(),
                 description: z.string(),
-                content: z.string()
+                content: z.string(),
+                country: z.string().optional(),
+                theme: z.string().optional()
             }),
             response: {
                 200: z.object({
@@ -27,6 +29,8 @@ export async function updateQuizz(app: FastifyTypedInstance) {
                     description: z.string(),
                     managerId: z.string(),
                     content: z.string(),
+                    country: z.string().optional(),
+                    theme: z.string().optional(),
                     createdAt: z.string(),
                 }),
                 404: z.object({
@@ -36,7 +40,7 @@ export async function updateQuizz(app: FastifyTypedInstance) {
         },
     }, async (request, reply) => {
         const { id } = request.params
-        const { title, description, content } = request.body
+        const { title, description, content, country, theme } = request.body
 
         const quiz = await quizRepository.findOne({
             where: { id }
@@ -50,6 +54,12 @@ export async function updateQuizz(app: FastifyTypedInstance) {
         quiz.title = title
         quiz.description = description
         quiz.content = content
+        if (country) {
+            quiz.country = country
+        }
+        if (theme) {
+            quiz.theme = theme
+        }
 
         await quizRepository.save(quiz)
 
@@ -59,6 +69,8 @@ export async function updateQuizz(app: FastifyTypedInstance) {
             description: quiz.description,
             managerId: quiz.managerId,
             content: quiz.content,
+            country: quiz.country,
+            theme: quiz.theme,
             createdAt: quiz.createdAt.toISOString(),
         }
     })

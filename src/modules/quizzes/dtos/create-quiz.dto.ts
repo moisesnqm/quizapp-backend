@@ -5,6 +5,7 @@ export const createQuizSchema = z.object({
     description: z.string(),
     content: z.any(), // qualquer JSON válido
     country: z.string().optional(),
+    theme: z.string().optional(),
     startDate: z.coerce.date().optional(),
     endDate: z.coerce.date().optional(),
 })

@@ -24,8 +24,6 @@ export async function getCampaigns(app: FastifyTypedInstance) {
                         status: z.enum(['draft','Pendente', 'Em Andamento', 'Concluída', 'Cancelada']),
                         startDate: z.number(),
                         endDate: z.number(),
-                        owner: z.string(),
-                        isOwner: z.boolean(),
                         createdAt: z.number(),
                         updatedAt: z.number(),
                         quizzes: z.array(z.object({
@@ -70,8 +68,6 @@ export async function getCampaigns(app: FastifyTypedInstance) {
                 status: campaign.status,
                 startDate: campaign.startDate.getTime(),
                 endDate: campaign.endDate.getTime(),
-                owner: campaign.owner,
-                isOwner: true,
                 createdAt: campaign.createdAt.getTime(),
                 updatedAt: campaign.updatedAt.getTime(),
                 quizzes: campaign.quizzes.map(quiz => ({

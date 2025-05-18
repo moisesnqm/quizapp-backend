@@ -29,7 +29,6 @@ export async function createCampaign(app: FastifyTypedInstance) {
                     status: z.enum(['Pendente', 'Em Andamento', 'Concluída', 'Cancelada']),
                     startDate: z.number(),
                     endDate: z.number(),
-                    owner: z.string(),
                     createdAt: z.number(),
                     updatedAt: z.number(),
                 }),
@@ -74,7 +73,6 @@ export async function createCampaign(app: FastifyTypedInstance) {
             status: campaign.status,
             startDate: campaign.startDate.getTime(),
             endDate: campaign.endDate.getTime(),
-            owner: campaign.owner,
             createdAt: campaign.createdAt.getTime(),
             updatedAt: campaign.updatedAt.getTime(),
         }

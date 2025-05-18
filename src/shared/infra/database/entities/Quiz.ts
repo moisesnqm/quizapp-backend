@@ -30,6 +30,9 @@ export class Quiz {
     @Column("varchar", { nullable: true })
     country!: string;
 
+    @Column("varchar", { nullable: true })
+    theme!: string;
+
     @Column("timestamp")
     startDate!: Date;
 

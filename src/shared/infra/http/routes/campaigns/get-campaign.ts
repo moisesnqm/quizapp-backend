@@ -23,8 +23,6 @@ export async function getCampaign(app: FastifyTypedInstance) {
                     status: z.enum(['Pendente', 'Em Andamento', 'Concluída', 'Cancelada']),
                     startDate: z.number(),
                     endDate: z.number(),
-                    owner: z.string(),
-                    isOwner: z.boolean(),
                     createdAt: z.number(),
                     updatedAt: z.number(),
                     quizzes: z.array(z.object({
@@ -53,6 +51,11 @@ export async function getCampaign(app: FastifyTypedInstance) {
         
         // Verifica se o usuário atual é o proprietário da campanha
         const isOwner = campaign.owner === userId
+        
+        // Se não for o proprietário, retorna erro 403
+        if (!isOwner) {
+            throw new AppError('You do not have permission to view this campaign', 403)
+        }
 
         return {
             id: campaign.id,
@@ -61,8 +64,6 @@ export async function getCampaign(app: FastifyTypedInstance) {
             status: campaign.status,
             startDate: campaign.startDate.getTime(),
             endDate: campaign.endDate.getTime(),
-            owner: campaign.owner,
-            isOwner, // Adiciona um campo indicando se o usuário atual é o proprietário
             createdAt: campaign.createdAt.getTime(),
             updatedAt: campaign.updatedAt.getTime(),
             quizzes: campaign.quizzes.map(quiz => ({

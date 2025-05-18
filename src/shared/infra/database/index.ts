@@ -18,6 +18,7 @@ import { ChangeQuizIdColumn20250402230003 } from './migrations/20250402230003-Ch
 import { ResizeQuizIdColumn20250402230004 } from './migrations/20250402230004-ResizeQuizIdColumn'
 import { UpdateQuizResponseForeignKey20250402230005 } from './migrations/20250402230005-UpdateQuizResponseForeignKey'
 import { AddCountryColumnToQuizzes1747346366856 } from './migrations/1747346366856-AddCountryColumnToQuizzes'
+import { AddThemeColumnToQuizzes1747346366857 } from './migrations/1747346366857-AddThemeColumnToQuizzes'
 
 export const AppDataSource = new DataSource({
     type: 'postgres',
@@ -40,5 +41,6 @@ export const AppDataSource = new DataSource({
         ResizeQuizIdColumn20250402230004,
         UpdateQuizResponseForeignKey20250402230005,
         AddCountryColumnToQuizzes1747346366856,
+        AddThemeColumnToQuizzes1747346366857,
     ],
 }) 

@@ -10,17 +10,19 @@ export async function updateQuizz(app: FastifyTypedInstance) {
         schema: {
             tags: ["quizzes"],
             summary: "Update a quiz",
-            description: "Update a quiz",
+            description: "Update a quiz with any fields (all fields are optional)",
             security: [{ bearerAuth: [] }],
             params: z.object({
                 id: z.string().min(1),
             }),
             body: z.object({
-                title: z.string(),
-                description: z.string(),
-                content: z.any(),
-                country: z.string().optional(),
-                theme: z.string().optional()
+                title: z.string().optional(),
+                description: z.string().optional(),
+                content: z.any().optional(),
+                country: z.string().nullable().optional(),
+                theme: z.string().nullable().optional(),
+                status: z.string().optional(),
+                subject: z.string().nullable().optional(),
             }),
             response: {
                 200: z.object({
@@ -29,8 +31,12 @@ export async function updateQuizz(app: FastifyTypedInstance) {
                     description: z.string(),
                     managerId: z.string(),
                     content: z.any(),
-                    country: z.string().optional(),
-                    theme: z.string().optional(),
+                    status: z.string(),
+                    subject: z.string().nullable(),
+                    country: z.string().nullable(),
+                    theme: z.string().nullable(),
+                    startDate: z.string().nullable(),
+                    endDate: z.string().nullable(),
                     createdAt: z.string(),
                 }),
                 404: z.object({
@@ -40,7 +46,7 @@ export async function updateQuizz(app: FastifyTypedInstance) {
         },
     }, async (request, reply) => {
         const { id } = request.params
-        const { title, description, content, country, theme } = request.body
+        const updateData = request.body
 
         const quiz = await quizRepository.findOne({
             where: { id }
@@ -51,16 +57,9 @@ export async function updateQuizz(app: FastifyTypedInstance) {
             return { message: "Quiz not found" }
         }
 
-        quiz.title = title
-        quiz.description = description
-        quiz.content = content
-        if (country) {
-            quiz.country = country
-        }
-        if (theme) {
-            quiz.theme = theme
-        }
-
+        // Atualizar o quiz com os dados enviados
+        Object.assign(quiz, updateData)
+        
         await quizRepository.save(quiz)
 
         return {
@@ -69,8 +68,12 @@ export async function updateQuizz(app: FastifyTypedInstance) {
             description: quiz.description,
             managerId: quiz.managerId,
             content: quiz.content,
+            status: quiz.status,
+            subject: quiz.subject,
             country: quiz.country,
             theme: quiz.theme,
+            startDate: quiz.startDate ? quiz.startDate.toISOString() : null,
+            endDate: quiz.endDate ? quiz.endDate.toISOString() : null,
             createdAt: quiz.createdAt.toISOString(),
         }
     })

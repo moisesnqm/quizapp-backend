@@ -22,8 +22,12 @@ export async function getQuizzById(app: FastifyTypedInstance) {
                     description: z.string(),
                     managerId: z.string(),
                     content: z.any(),
-                    country: z.string().optional(),
-                    theme: z.string().optional(),
+                    status: z.string(),
+                    subject: z.string().nullable(),
+                    country: z.string().nullable(),
+                    theme: z.string().nullable(),
+                    startDate: z.string().nullable(),
+                    endDate: z.string().nullable(),
                     createdAt: z.string(),
                 }),
                 404: z.object({
@@ -49,8 +53,12 @@ export async function getQuizzById(app: FastifyTypedInstance) {
             description: quiz.description,
             managerId: quiz.managerId,
             content: quiz.content,
+            status: quiz.status,
+            subject: quiz.subject,
             country: quiz.country,
             theme: quiz.theme,
+            startDate: quiz.startDate ? quiz.startDate.toISOString() : null,
+            endDate: quiz.endDate ? quiz.endDate.toISOString() : null,
             createdAt: quiz.createdAt.toISOString(),
         }
     })

@@ -22,6 +22,8 @@ export async function getPublicQuiz(app: FastifyTypedInstance) {
                     campaignStatus: z.string(),
                     campaignEndDate: z.number(),
                     content: z.any(),
+                    theme: z.string().nullable(),
+                    country: z.string().nullable(),
                 }),
             },
         },
@@ -30,7 +32,7 @@ export async function getPublicQuiz(app: FastifyTypedInstance) {
 
         // Buscar o quiz com a campanha relacionada usando SQL nativo
         const result = await AppDataSource.query(`
-            SELECT q.id as quiz_id, q.content, c.id as campaign_id, c.status, c."endDate"
+            SELECT q.id as quiz_id, q.content, q.theme, q.country, c.id as campaign_id, c.status, c."endDate"
             FROM quizzes q
             JOIN campaigns_quizzes cq ON q.id = cq.quiz_id
             JOIN campaigns c ON cq.campaign_id = c.id
@@ -50,6 +52,8 @@ export async function getPublicQuiz(app: FastifyTypedInstance) {
             campaignStatus: quizData.status,
             campaignEndDate: new Date(quizData.endDate).getTime(),
             content: quizData.content,
+            theme: quizData.theme,
+            country: quizData.country,
         }
     })
 } 
